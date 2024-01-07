@@ -1,0 +1,78 @@
+﻿@model List<CalisanBilgiler.Models.CalisanViewModel>
+@{
+	ViewData["Title"] = "Calisan Bilgileri";
+	var successMessage = TempData["successMessage"]?.ToString();
+	var errorMessage = TempData["errorMessage"]?.ToString();
+}
+<h3>Calisan Bilgileri</h3>
+<hr />
+@if (!string.IsNullOrWhiteSpace(@successMessage))
+{
+	<div class="alert alert-success">
+		<strong>Basarili!</strong>@successMessage
+		<button type="button" class="btn-close float-end" data-bs-dismiss="alert"></button>
+	</div>
+	
+}
+else if (!string.IsNullOrWhiteSpace(@errorMessage))
+{
+	<div class="alert alert-danger">
+		<strong>Error!</strong>@errorMessage
+		<button type="button" class="btn-close float-end" data-bs-dismiss="alert"></button>
+	</div>
+	
+}
+<form>
+	<button asp-action="Create" asp-controller="Calisan"class="btn btn-primary nb-3">Calisan Oluştur</button>
+	<table class="table table-responsive table-hover table-bordered">
+		<thead>
+			<tr>
+				<tr class="table-active">
+				<th class="text-center">Id</th>
+				<th class="text-center">Name</th>
+				<th class="text-center">Date Of Birth</th>
+				<th class="text-center">E-Mail</th>
+				<th class="text-center">Salary</th>
+				<th class="text-center">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			@if (Model != null && Model.Any())
+			{
+				@foreach(var calisan in Model)
+				{
+					<tr>
+						<td class="text-center">@calisan.Id</td>
+						<td>@calisan.FullName</td>
+						<td class="text-center">@calisan.DateOfBirth.ToString("dd/MM/yyyy")</td>
+						<td>@calisan.Email</td>
+						<td class="text-end">@calisan.Salary</td>
+						<td>
+							<div class="btn group btn-group-sm">
+								<a asp-controller="calisan"asp-action="Edit" asp-route-id="@calisan.Id"
+								class="btn btn-primary">Edit</a>
+								<a asp-controller="calisan" asp-action="Delete" asp-route-id="@calisan.Id"
+								class="btn btn-danger">Delete</a>
+
+							</div>
+						</td>
+					</tr>
+				}
+				
+			}
+			else
+			{
+				<tr>
+					<td colspan="6">
+						<div>
+							No Employees Available at this moment!
+						</div>
+
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+
+</form>
